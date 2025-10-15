@@ -3,7 +3,7 @@ from marshmallow import ValidationError
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from models import db, Borrower, Application
-from schemas import BorrowerRequestSchema, BorrowerSchema, ApplicationRequestSchema, ApplicationSchema
+from schemas import BorrowerRequestSchema, BorrowerSchema
 
 
 bp = Blueprint("api", __name__)
@@ -21,7 +21,7 @@ def health():
 # Borrowers Endpoints
 # ========================================
 
-bp.route("/borrowers", methods=["POST"])
+@bp.route("/borrowers", methods=["POST"])
 def create_borrower():
     req_schema = BorrowerRequestSchema()
     res_schema = BorrowerSchema()
@@ -41,18 +41,17 @@ def create_borrower():
         new_borrower = Borrower(**data)
         db.session.add(new_borrower)
         db.session.commit()
-
     except IntegrityError:
         db.session.rollback()
         return jsonify({"error": "Database integrity error: Please check for duplicates or missing requered fields."}), 400
 
     except SQLAlchemyError as e:
             db.session.rollback()
-            return jsonify({"error": "An unexpected database error occurred.", "details": str(e)}), 500
+            return jsonify({"error": "Unexpected database error occurred.", "details": str(e)}), 500
 
     except Exception as e:
         db.session.rollback()
-        return jsonify({"error":"Unexpecred server error", "details": str(e)}), 500
+        return jsonify({"error":"Unexpected server error", "details": str(e)}), 500
     
     return res_schema.jsonify(new_borrower), 201
 

@@ -2,7 +2,8 @@ from app import db
 
 class Borrower(db.Model):
     borrower_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False) # Street address, required for most users
+    first_name = db.Column(db.String(100), nullable=False)
+    last_name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     address_1 = db.Column(db.String(200), nullable=False) # Street address, required for most users
     address_2 = db.Column(db.String(200))
@@ -11,6 +12,9 @@ class Borrower(db.Model):
     zip_code = db.Column(db.String(20), nullable=False)
     phone = db.Column(db.String(20))
     ssn = db.Column(db.String(11), unique=True, nullable=False)  # Format: XXX-XX-XXXX
+
+    applications = db.relationship("Application", backref="borrower", lazy=True)
+
 
 
 class Application(db.Model):

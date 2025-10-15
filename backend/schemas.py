@@ -9,7 +9,8 @@ from marshmallow import fields
 
 # Validate Incoming POST data 
 class BorrowerRequestSchema(ma.Schema):
-    name = fields.String(required=True)
+    first_name = fields.String(required=True)
+    last_name = fields.String(required=True)
     address_1 = fields.String(required=True)
     address_2 = fields.String()
     city = fields.String(required=True)
