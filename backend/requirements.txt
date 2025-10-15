@@ -1,0 +1,15 @@
+# Project: Loan Application Project
+# Description: This file lists the Python package dependencies for Loan Application Project Backend .
+# Date: October 14, 2025
+# Author: David Allison
+#
+# To install these dependencies, run: pip install -r requirements.txt
+#
+# --- Package List ---
+
+Flask==3.1.2
+Flask-SQLAlchemy==3.1.1
+psycopg2-binary==2.9.11
+pytest==8.4.2
+flask-cors==6.0.1
+python-dotenv==1.1.1

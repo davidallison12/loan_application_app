@@ -1,0 +1,47 @@
+import os
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
+from dotenv import load_dotenv
+
+
+load_dotenv()
+
+db = SQLAlchemy()
+
+def create_app(test_config=False):
+    app = Flask(__name__)
+
+    # Enabling CORS for frontend-backend communication
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
+
+    # DB Configuration
+    if test_config:
+        # In-memory for testing
+        app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
+    else:
+        # USE DB URL from env, fallback to local SQLite
+        app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
+            "DATABASE_URL", "sqlite:///loan_app.db")
+
+
+    # Secret key from env, fallback to defaultsecret
+    app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "defaultsecret")
+
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+    # Initialize DB
+    db.init_app(app)
+
+    # Register Blueprints
+    from routes import bp
+    app.register_blueprint(bp, url_prefix="/api")
+
+    return app
+
+# Run App
+if __name__ == "__main__":
+    app = create_app()
+    with app.app_context():
+        db.create_all()  # Create tables if they don't exist
+    app.run(debug=True, host="0.0.0.0")
