@@ -32,7 +32,8 @@ class BorrowerSchema(ma.SQLAlchemyAutoSchema):
         load_instance = True
         exclude = ("ssn",)  # Exclude SSN from response for security
 
-
+    created_at = ma.auto_field(dump_only=True)
+    updated_at = ma.auto_field(dump_only=True)
 # ========================================
 # Application Schemas
 # ========================================
@@ -51,3 +52,5 @@ class ApplicationResponseSchema(ma.SQLAlchemyAutoSchema):
         include_relationships = True
 
     borrower = fields.Nested(BorrowerSchema)
+    created_at = ma.auto_field(dump_only=True)
+    updated_at = ma.auto_field(dump_only=True)

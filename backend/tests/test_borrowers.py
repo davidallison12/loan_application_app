@@ -1,4 +1,6 @@
 import pytest
+from datetime import datetime
+from unittest.mock import patch
 
 
 
@@ -33,12 +35,20 @@ def mock_expected_response():
         "state": "CA",
         "zip_code": "12345",
         "email": "email@email.com",
-        "phone": "555-123-4567"
+        "phone": "555-123-4567",
+        "created_at": "2025-10-16T12:00:00",
+        "updated_at": "2025-10-16T12:00:00"
         }
 
 
-def test_create_borrower_success_201(client, mock_borrower_request, mock_expected_response):
+@patch("models.datetime")
+def test_create_borrower_success_201(mock_datetime, client, mock_borrower_request, mock_expected_response):
     """Test creating a borrower successfully returns 201 status code and correct data."""
+
+    fixed_time = datetime(2025, 10, 16, 12, 0, 0)
+    mock_datetime.now.return_value = fixed_time
+    mock_datetime.now.return_value = fixed_time
+    mock_datetime.side_effect = lambda *args, **kwargs: datetime(*args, **kwargs)
     
     response = client.post("/api/borrowers", json=mock_borrower_request)   
     json_data = response.get_json()
@@ -50,9 +60,17 @@ def test_create_borrower_success_201(client, mock_borrower_request, mock_expecte
     assert json_data == mock_expected_response
 
 
-def test_create_borrower_duplicate_ssn_409(client, mock_borrower_request):
+@patch("models.datetime")
+def test_create_borrower_duplicate_ssn_409(mock_datetime, client, mock_borrower_request):
     """Test creating a borrower with duplicate SSN returns 409 status code."""
     
+
+    fixed_time = datetime(2025, 10, 16, 12, 0, 0)
+    mock_datetime.now.return_value = fixed_time # Created_at
+    mock_datetime.now.return_value = fixed_time # Updated_at
+    mock_datetime.side_effect = lambda *args, **kwargs: datetime(*args, **kwargs)
+    
+
     # First request should succeed
     response1 = client.post("/api/borrowers", json=mock_borrower_request)
     assert response1.status_code == 201

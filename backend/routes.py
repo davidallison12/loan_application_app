@@ -25,6 +25,7 @@ def health():
 
 @bp.route("/borrowers", methods=["POST"])
 def create_borrower():
+    """Create a new borrower."""
     req_schema = BorrowerRequestSchema()
     res_schema = BorrowerSchema()
 
@@ -58,6 +59,7 @@ def create_borrower():
 
 @bp.route("/applications", methods=["POST"])
 def create_application():
+    """Create a new loan application."""
     req_schema = ApplicationRequestSchema()
     res_schema = ApplicationResponseSchema()
     
