@@ -1,15 +1,16 @@
 import os
 from flask import Flask
-from flask_marshmallow import Marshmallow
-from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from dotenv import load_dotenv
 
+from extensions import db, ma
+from routes import bp
+
+
+
+
 
 load_dotenv()
-
-db = SQLAlchemy()
-ma = Marshmallow()
 
 def create_app(test_config=False):
     app = Flask(__name__)
@@ -37,7 +38,6 @@ def create_app(test_config=False):
     ma.init_app(app)
 
     # Register Blueprints
-    from routes import bp
     app.register_blueprint(bp, url_prefix="/api")
 
     return app

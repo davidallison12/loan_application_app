@@ -4,11 +4,15 @@ from marshmallow import fields
 
 
 # ========================================
-# Borrowers Schemas
+# Borrower Schemas
 # ========================================
 
 # Validate Incoming POST data 
 class BorrowerRequestSchema(ma.Schema):
+    class Meta:
+             model = Borrower
+             unknown = 'EXCLUDE'  # Ignore unknown fields in the input data
+
     first_name = fields.String(required=True)
     last_name = fields.String(required=True)
     address_1 = fields.String(required=True)
@@ -27,3 +31,23 @@ class BorrowerSchema(ma.SQLAlchemyAutoSchema):
         model = Borrower
         load_instance = True
         exclude = ("ssn",)  # Exclude SSN from response for security
+
+
+# ========================================
+# Application Schemas
+# ========================================
+
+# Validate Incoming POST data 
+class ApplicationRequestSchema(ma.Schema):
+    borrower = fields.Nested(BorrowerRequestSchema, required=True)
+    requested_amount = fields.Float(required=True)
+
+
+# Serialize Outgoing Response data
+class ApplicationResponseSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Application
+        include_fk = True
+        include_relationships = True
+
+    borrower = fields.Nested(BorrowerSchema)
