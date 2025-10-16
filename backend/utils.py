@@ -109,6 +109,8 @@ def get_loan_offer(requested_amount, open_credit_lines):
 
         monthly_rate = interest_rate / 12
         monthly_payment = requested_amount * (monthly_rate/(1 - (1 + monthly_rate) ** -term_months))
+        monthly_payment = round(monthly_payment, 2) # Round to 2 decimal places
+
         offer.update({
             "monthly_payment": monthly_payment, 
             "approved_amount": requested_amount
