@@ -8,8 +8,6 @@ from routes import bp
 
 
 
-
-
 load_dotenv()
 
 def create_app(test_config=False):

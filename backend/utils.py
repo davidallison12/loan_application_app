@@ -87,6 +87,7 @@ def get_loan_offer(requested_amount, open_credit_lines):
     if offer.get("status") == "Approved":
         term_months = offer["term_months"]
         interest_rate = offer["interest_rate"]
+        
         monthly_rate = interest_rate / 12
         monthly_payment = requested_amount * (monthly_rate/(1 - (1 + monthly_rate) ** -term_months))
         offer.update({"monthly_payment": monthly_payment, "approved_amount": requested_amount})
