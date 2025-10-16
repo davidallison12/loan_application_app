@@ -7,6 +7,8 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 def get_or_create_borrower(borrower_data):
     """
     Retrieve a borrower by SSN or create a new one if not found.
+    param: 
+        - borrower_data: dict # borrower details including 'ssn'
 
     Returns:
         dict:
@@ -53,6 +55,14 @@ def get_or_create_borrower(borrower_data):
 def get_loan_offer(requested_amount, open_credit_lines):
     """
     Determine loan offer based on requested amount and open credit lines.
+    param: 
+        - requested_amount: float # Amount requested by borrower
+        - open_credit_lines: int # Number of open credit lines the borrower has
+    Conditions:
+    - Requested amount outside $10,000-$50,000 = Denied
+    - Credit lines of <10 = 36-month term + 10% interest
+    - Credit lines of <=50 and >=10 = 24-month term + 20% interest 
+    - Credit lines of >50 = Denied
 
     Returns:
         dict:
@@ -67,32 +77,45 @@ def get_loan_offer(requested_amount, open_credit_lines):
     """
     offer = {}
 
-    if requested_amount < 10000 or requested_amount > 50000:
-        offer["status"] = "Denied"
-        offer["reason"] = "Requested amount must be between $10,000 and $50,000."
-    elif open_credit_lines < 10:
+    if requested_amount < 10000 or requested_amount > 50000: 
         offer.update({
+            "status": "Denied",
+            "reason": "Requested amount must be between $10,000 and $50,000."
+                      })
+
+    elif open_credit_lines < 10: 
+        offer.update({
+            "status": "Approved",
+            "reason": None,
             "interest_rate": 0.10,
             "term_months": 36,
             })
+        
     elif 10 <= open_credit_lines <=50:
         offer.update({
+            "status": "Approved",
+            "reason": None,
             "interest_rate": 0.20,
             "term_months": 24,
             })
-    else:
+    else: 
         offer["status"] = "Denied"
         offer["reason"] = "Too many open credit lines."
     
-    if offer.get("status") == "Approved":
+    if offer["status"] == "Approved":
+        # If approved: Determine monthly payment using amortization formula
         term_months = offer["term_months"]
         interest_rate = offer["interest_rate"]
-        
+
         monthly_rate = interest_rate / 12
         monthly_payment = requested_amount * (monthly_rate/(1 - (1 + monthly_rate) ** -term_months))
-        offer.update({"monthly_payment": monthly_payment, "approved_amount": requested_amount})
+        offer.update({
+            "monthly_payment": monthly_payment, 
+            "approved_amount": requested_amount
+        })
     
     else:
+        # If denied: financial fields are None
         offer.update({
             "approved_amount": None,
             "interest_rate": None,
