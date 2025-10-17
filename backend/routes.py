@@ -5,9 +5,9 @@ from marshmallow import ValidationError
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from extensions import db
-from models import Application, Borrower
-from schemas import (ApplicationRequestSchema, ApplicationResponseSchema,
-                     BorrowerRequestSchema, BorrowerSchema)
+from models import Application
+from schemas import ApplicationRequestSchema, ApplicationResponseSchema
+                     
 from utils import get_loan_offer, get_or_create_borrower
 
 bp = Blueprint("api", __name__)
@@ -16,53 +16,15 @@ bp = Blueprint("api", __name__)
 # ========================================
 # Health Check Endpoint
 # ========================================
+
 @bp.route("/health", methods=["GET"])
 def health():
     return jsonify({"status": "ok"}), 200
 
 
 # ========================================
-# Borrowers Endpoints
-# ========================================
-
-
-@bp.route("/borrowers", methods=["POST"])
-def create_borrower():
-    """Create a new borrower."""
-    req_schema = BorrowerRequestSchema()
-    res_schema = BorrowerSchema()
-
-    # Load Request
-    try:
-        data = req_schema.load(request.get_json())
-    except ValidationError as err:
-        return jsonify(err.messages), 400
-
-    # Check for existing SSN
-    existing_borrower = Borrower.query.filter_by(ssn=data["ssn"]).first()
-    if existing_borrower:
-        return (
-            jsonify({"error": "Borrower with this SSN already exists."}),
-            409,
-        )  # Conflict Status Code
-
-    # Create new borrower
-    try:
-        new_borrower = Borrower(**data)
-        db.session.add(new_borrower)
-        db.session.commit()
-
-    except (IntegrityError, SQLAlchemyError) as e:
-        db.session.rollback()
-        return jsonify({"error": "Database error", "details": str(e)}), 500
-
-    return res_schema.jsonify(new_borrower), 201
-
-
-# ========================================
 # Applications Endpoints
 # ========================================
-
 
 @bp.route("/applications", methods=["POST"])
 def create_application():
