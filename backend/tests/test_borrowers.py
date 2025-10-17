@@ -4,10 +4,7 @@ from unittest.mock import patch
 
 
 
-# ========================================
-# Borrowers Specific Unit Test
-# ========================================
-
+# Fixtures for borrower tests
 @pytest.fixture
 def mock_borrower_request():
     return {
@@ -40,6 +37,10 @@ def mock_expected_response():
         "updated_at": "2025-10-16T12:00:00"
         }
 
+
+# ========================================
+# Borrowers Specific Unit Test
+# ========================================
 
 @patch("models.datetime")
 def test_create_borrower_success_201(mock_datetime, client, mock_borrower_request, mock_expected_response):

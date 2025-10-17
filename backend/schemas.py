@@ -1,4 +1,4 @@
-from app import ma
+from extensions import ma
 from models import Borrower, Application
 from marshmallow import fields
 
