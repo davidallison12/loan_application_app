@@ -1,0 +1,4 @@
+# Flake 8 configuration file - Linting rules
+[flake8]
+max-line-length = 100
+exclude = venv,__pycache__,.git,migrations
