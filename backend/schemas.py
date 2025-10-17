@@ -1,4 +1,4 @@
-from marshmallow import fields
+from marshmallow import fields, validate
 
 from extensions import ma
 from models import Application, Borrower
@@ -23,7 +23,13 @@ class BorrowerRequestSchema(ma.Schema):
     zip_code = fields.String(required=True)
     email = fields.Email(required=True)
     phone = fields.String()
-    ssn = fields.String(required=True)  # Mask/encrypt at later date for production app
+    ssn = fields.String(
+        required=True,
+        validate=[
+            # validate.Length(equal=11, error="SSN must be exactly 11 characters."),
+            validate.Regexp(r"^\d{3}-\d{2}-\d{4}$", error="SSN must be in the format ###-##-####")
+        ]
+    )  # Mask/encrypt at later date for production app
 
 
 # Serialize Outgoing Response data

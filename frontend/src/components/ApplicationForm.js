@@ -20,6 +20,7 @@ const ApplicationForm = () => {
 
     const navigate = useNavigate();
     const [error, setError] = useState(null);
+    const [fieldErrors, setFieldErrors] = useState({});
 
     // Handle input changes on the form
     const handleChange = (e) => {
@@ -33,6 +34,7 @@ const ApplicationForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault(); // Prevent page reload on submit
         setError(null);
+        setFieldErrors({});
 
         // Prepare payload
         const payload = {
@@ -59,9 +61,14 @@ const ApplicationForm = () => {
             ); // Adjust URL as needed // Hardcoded for now
             navigate("/result", { state: { application: res.data } });
         } catch (err) {
-            setError(
-                "An error occurred while submitting the application. Plese try again."
-            );
+            if (err.response?.data?.errors?.borrower) {
+                setFieldErrors(err.response.data.errors.borrower);
+            } else {
+                setError(
+                    err.response?.data?.message ||
+                        "An error occurred while submitting the application. Plese try again."
+                );
+            }
         }
     };
     // Render the form
@@ -224,6 +231,11 @@ const ApplicationForm = () => {
                         className="w-full p-2 border rounded"
                         placeholder="123-45-6789"
                     />
+                    {fieldErrors.ssn && (
+                        <p className="text-red-500 text-sm">
+                            {fieldErrors.ssn[0]}
+                        </p>
+                    )}
                 </div>
                 <div className="relative">
                     <label
@@ -232,7 +244,9 @@ const ApplicationForm = () => {
                     >
                         Requested Amount
                     </label>
-                    <span className="absolute left-2 top-1/2 transform -translate-y-1/5 text-gray-500">$</span>
+                    <span className="absolute left-2 top-1/2 transform -translate-y-1/5 text-gray-500">
+                        $
+                    </span>
                     <input
                         name="requested_amount"
                         placeholder="0.00"
