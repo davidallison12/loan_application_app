@@ -1,17 +1,18 @@
-from extensions import ma
-from models import Borrower, Application
 from marshmallow import fields
 
+from extensions import ma
+from models import Application, Borrower
 
 # ========================================
 # Borrower Schemas
 # ========================================
 
-# Validate Incoming POST data 
+
+# Validate Incoming POST data
 class BorrowerRequestSchema(ma.Schema):
     class Meta:
-             model = Borrower
-             unknown = 'EXCLUDE'  # Ignore unknown fields in the input data
+        model = Borrower
+        unknown = "EXCLUDE"  # Ignore unknown fields in the input data
 
     first_name = fields.String(required=True)
     last_name = fields.String(required=True)
@@ -22,7 +23,7 @@ class BorrowerRequestSchema(ma.Schema):
     zip_code = fields.String(required=True)
     email = fields.Email(required=True)
     phone = fields.String()
-    ssn = fields.String(required=True) # Mask/encrypt at later date for production app
+    ssn = fields.String(required=True)  # Mask/encrypt at later date for production app
 
 
 # Serialize Outgoing Response data
@@ -34,11 +35,14 @@ class BorrowerSchema(ma.SQLAlchemyAutoSchema):
 
     created_at = ma.auto_field(dump_only=True)
     updated_at = ma.auto_field(dump_only=True)
+
+
 # ========================================
 # Application Schemas
 # ========================================
 
-# Validate Incoming POST data 
+
+# Validate Incoming POST data
 class ApplicationRequestSchema(ma.Schema):
     borrower = fields.Nested(BorrowerRequestSchema, required=True)
     requested_amount = fields.Float(required=True)

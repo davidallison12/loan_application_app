@@ -1,12 +1,14 @@
 import random
+
 from flask import Blueprint, jsonify, request
 from marshmallow import ValidationError
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from extensions import db
-from models import Borrower, Application
-from schemas import BorrowerRequestSchema, BorrowerSchema, ApplicationRequestSchema, ApplicationResponseSchema
-from utils import get_or_create_borrower, get_loan_offer
+from models import Application, Borrower
+from schemas import (ApplicationRequestSchema, ApplicationResponseSchema,
+                     BorrowerRequestSchema, BorrowerSchema)
+from utils import get_loan_offer, get_or_create_borrower
 
 bp = Blueprint("api", __name__)
 
@@ -23,6 +25,7 @@ def health():
 # Borrowers Endpoints
 # ========================================
 
+
 @bp.route("/borrowers", methods=["POST"])
 def create_borrower():
     """Create a new borrower."""
@@ -34,12 +37,15 @@ def create_borrower():
         data = req_schema.load(request.get_json())
     except ValidationError as err:
         return jsonify(err.messages), 400
-    
+
     # Check for existing SSN
-    existing_borrower = Borrower.query.filter_by(ssn=data['ssn']).first()
+    existing_borrower = Borrower.query.filter_by(ssn=data["ssn"]).first()
     if existing_borrower:
-        return jsonify({"error": "Borrower with this SSN already exists."}), 409 # Conflict Status Code
-    
+        return (
+            jsonify({"error": "Borrower with this SSN already exists."}),
+            409,
+        )  # Conflict Status Code
+
     # Create new borrower
     try:
         new_borrower = Borrower(**data)
@@ -49,7 +55,7 @@ def create_borrower():
     except (IntegrityError, SQLAlchemyError) as e:
         db.session.rollback()
         return jsonify({"error": "Database error", "details": str(e)}), 500
-    
+
     return res_schema.jsonify(new_borrower), 201
 
 
@@ -57,47 +63,47 @@ def create_borrower():
 # Applications Endpoints
 # ========================================
 
+
 @bp.route("/applications", methods=["POST"])
 def create_application():
     """Create a new loan application."""
     req_schema = ApplicationRequestSchema()
     res_schema = ApplicationResponseSchema()
-    
+
     # Load and Validate Request
     try:
         data = req_schema.load(request.get_json())
     except ValidationError as err:
         return jsonify(err.messages), 400
-    
+
     # Check if borrower exists by SSN
     borrower_data = data.pop("borrower")
 
     result = get_or_create_borrower(borrower_data)
-    borrower_info = result['borrower']
-    errors = result['errors']
-    
-    if errors :
+    borrower_info = result["borrower"]
+    errors = result["errors"]
+
+    if errors:
         return jsonify({"errors": errors}), 400
-    
-    
+
     # At this point we have a borrower (new or existing)
     # Determine open lines of credit for borrower
     open_credit_lines = random.randint(0, 100)
 
     # Determine loan offer
-    loan_offer = get_loan_offer(data['requested_amount'], open_credit_lines)
+    loan_offer = get_loan_offer(data["requested_amount"], open_credit_lines)
 
     try:
         new_application = Application(
-            borrower_id=borrower_info['borrower_id'],
-            requested_amount=data['requested_amount'],
+            borrower_id=borrower_info["borrower_id"],
+            requested_amount=data["requested_amount"],
             open_credit_lines=open_credit_lines,
-            approved_amount=loan_offer['approved_amount'],
-            interest_rate=loan_offer['interest_rate'],
-            term_months=loan_offer['term_months'],
-            monthly_payment=loan_offer['monthly_payment'],
-            status=loan_offer['status'],
-            reason=loan_offer['reason']
+            approved_amount=loan_offer["approved_amount"],
+            interest_rate=loan_offer["interest_rate"],
+            term_months=loan_offer["term_months"],
+            monthly_payment=loan_offer["monthly_payment"],
+            status=loan_offer["status"],
+            reason=loan_offer["reason"],
         )
         db.session.add(new_application)
         db.session.commit()
@@ -107,7 +113,3 @@ def create_application():
         return jsonify({"error": "Database error", "details": str(e)}), 500
 
     return res_schema.jsonify(new_application), 201
-
-
-        
-        

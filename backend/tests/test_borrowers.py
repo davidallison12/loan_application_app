@@ -1,7 +1,7 @@
-import pytest
 from datetime import datetime
 from unittest.mock import patch
 
+import pytest
 
 
 # Fixtures for borrower tests
@@ -17,8 +17,8 @@ def mock_borrower_request():
         "zip_code": "12345",
         "email": "email@email.com",
         "phone": "555-123-4567",
-        "ssn": "123-45-6789"
-        }
+        "ssn": "123-45-6789",
+    }
 
 
 @pytest.fixture
@@ -34,24 +34,27 @@ def mock_expected_response():
         "email": "email@email.com",
         "phone": "555-123-4567",
         "created_at": "2025-10-16T12:00:00",
-        "updated_at": "2025-10-16T12:00:00"
-        }
+        "updated_at": "2025-10-16T12:00:00",
+    }
 
 
 # ========================================
 # Borrowers Specific Unit Test
 # ========================================
 
+
 @patch("models.datetime")
-def test_create_borrower_success_201(mock_datetime, client, mock_borrower_request, mock_expected_response):
+def test_create_borrower_success_201(
+    mock_datetime, client, mock_borrower_request, mock_expected_response
+):
     """Test creating a borrower successfully returns 201 status code and correct data."""
 
     fixed_time = datetime(2025, 10, 16, 12, 0, 0)
     mock_datetime.now.return_value = fixed_time
     mock_datetime.now.return_value = fixed_time
     mock_datetime.side_effect = lambda *args, **kwargs: datetime(*args, **kwargs)
-    
-    response = client.post("/api/borrowers", json=mock_borrower_request)   
+
+    response = client.post("/api/borrowers", json=mock_borrower_request)
     json_data = response.get_json()
 
     assert response.status_code == 201
@@ -62,15 +65,15 @@ def test_create_borrower_success_201(mock_datetime, client, mock_borrower_reques
 
 
 @patch("models.datetime")
-def test_create_borrower_duplicate_ssn_409(mock_datetime, client, mock_borrower_request):
+def test_create_borrower_duplicate_ssn_409(
+    mock_datetime, client, mock_borrower_request
+):
     """Test creating a borrower with duplicate SSN returns 409 status code."""
-    
 
     fixed_time = datetime(2025, 10, 16, 12, 0, 0)
-    mock_datetime.now.return_value = fixed_time # Created_at
-    mock_datetime.now.return_value = fixed_time # Updated_at
+    mock_datetime.now.return_value = fixed_time  # Created_at
+    mock_datetime.now.return_value = fixed_time  # Updated_at
     mock_datetime.side_effect = lambda *args, **kwargs: datetime(*args, **kwargs)
-    
 
     # First request should succeed
     response1 = client.post("/api/borrowers", json=mock_borrower_request)

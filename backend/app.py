@@ -1,14 +1,14 @@
 import os
+
+from dotenv import load_dotenv
 from flask import Flask
 from flask_cors import CORS
-from dotenv import load_dotenv
 
 from extensions import db, ma
 from routes import bp
 
-
-
 load_dotenv()
+
 
 def create_app(test_config=False):
     app = Flask(__name__)
@@ -23,8 +23,8 @@ def create_app(test_config=False):
     else:
         # USE DB URL from env, fallback to local SQLite
         app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
-            "DATABASE_URL", "sqlite:///loan_app.db")
-
+            "DATABASE_URL", "sqlite:///loan_app.db"
+        )
 
     # Secret key from env, fallback to defaultsecret
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "defaultsecret")
@@ -39,6 +39,7 @@ def create_app(test_config=False):
     app.register_blueprint(bp, url_prefix="/api")
 
     return app
+
 
 # Run App
 if __name__ == "__main__":
