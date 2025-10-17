@@ -34,6 +34,7 @@ const ApplicationForm = () => {
         e.preventDefault(); // Prevent page reload on submit
         setError(null);
 
+        // Prepare payload
         const payload = {
             borrower: {
                 first_name: formData.first_name,
@@ -71,86 +72,174 @@ const ApplicationForm = () => {
             {error && <p className="text-red-500">{error}</p>}
 
             <form onSubmit={handleSubmit} className="space-y-3">
-                <input
-                    name="first_name"
-                    placeholder="First Name"
-                    onChange={handleChange}
-                    required
-                    className="w-full p-2 border rounded"
-                />
-                <input
-                    name="last_name"
-                    placeholder="Last Name"
-                    onChange={handleChange}
-                    required
-                    className="w-full p-2 border rounded"
-                />
-                <input
-                    name="email"
-                    placeholder="Email"
-                    type="email"
-                    onChange={handleChange}
-                    required
-                    className="w-full p-2 border rounded"
-                />
-                <input
-                    name="phone"
-                    placeholder="Phone: ###-###-####"
-                    onChange={handleChange}
-                    className="w-full p-2 border rounded"
-                />
-                <input
-                    name="address_1"
-                    placeholder="Address 1"
-                    onChange={handleChange}
-                    required
-                    className="w-full p-2 border rounded"
-                />
-                <input
-                    name="address_2"
-                    placeholder="Address 2"
-                    onChange={handleChange}
-                    className="w-full p-2 border rounded"
-                />
-                <input
-                    name="city"
-                    placeholder="City"
-                    onChange={handleChange}
-                    required
-                    className="w-full p-2 border rounded"
-                />
-                <input
-                    name="state"
-                    placeholder="State"
-                    onChange={handleChange}
-                    required
-                    className="w-full p-2 border rounded"
-                />
-                <input
-                    name="zip_code"
-                    placeholder="Zip Code"
-                    onChange={handleChange}
-                    required
-                    className="w-full p-2 border rounded"
-                />
-                <input
-                    name="ssn"
-                    placeholder="SSN: ###-##-####"
-                    onChange={handleChange}
-                    required
-                    className="w-full p-2 border rounded"
-                />
+                <div>
+                    <label
+                        htmlFor="first_name"
+                        className="block font-medium mb-1"
+                    >
+                        First Name
+                    </label>
+                    <input
+                        id="first_name"
+                        name="first_name"
+                        onChange={handleChange}
+                        required
+                        className="w-full p-2 border rounded"
+                        placeholder="John"
+                    />
+                </div>
+
+                <div>
+                    <label
+                        htmlFor="last_name"
+                        className="block font-medium mb-1"
+                    >
+                        Last Name
+                    </label>
+                    <input
+                        id="last_name"
+                        name="last_name"
+                        onChange={handleChange}
+                        required
+                        className="w-full p-2 border rounded"
+                        placeholder="Doe"
+                    />
+                </div>
+
+                <div>
+                    <label htmlFor="email" className="block font-medium mb-1">
+                        Email
+                    </label>
+                    <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        onChange={handleChange}
+                        required
+                        className="w-full p-2 border rounded"
+                        placeholder="email@email.com"
+                    />
+                </div>
+
+                <div>
+                    <label htmlFor="phone" className="block font-medium mb-1">
+                        Phone
+                    </label>
+                    <input
+                        id="phone"
+                        name="phone"
+                        onChange={handleChange}
+                        className="w-full p-2 border rounded"
+                        placeholder="555-555-5555"
+                    />
+                </div>
+
+                <div>
+                    <label
+                        htmlFor="address_1"
+                        className="block font-medium mb-1"
+                    >
+                        Address 1
+                    </label>
+                    <input
+                        id="address_1"
+                        name="address_1"
+                        onChange={handleChange}
+                        required
+                        className="w-full p-2 border rounded"
+                        placeholder="123 Main St"
+                    />
+                </div>
+
+                <div>
+                    <label
+                        htmlFor="address_2"
+                        className="block font-medium mb-1"
+                    >
+                        Address 2
+                    </label>
+                    <input
+                        id="address_2"
+                        name="address_2"
+                        onChange={handleChange}
+                        className="w-full p-2 border rounded"
+                        placeholder="Apt 4B"
+                    />
+                </div>
+
+                <div>
+                    <label htmlFor="city" className="block font-medium mb-1">
+                        City
+                    </label>
+                    <input
+                        id="city"
+                        name="city"
+                        onChange={handleChange}
+                        required
+                        className="w-full p-2 border rounded"
+                        placeholder="Springfield"
+                    />
+                </div>
+
+                <div>
+                    <label htmlFor="state" className="block font-medium mb-1">
+                        State
+                    </label>
+                    <input
+                        id="state"
+                        name="state"
+                        onChange={handleChange}
+                        required
+                        className="w-full p-2 border rounded"
+                        placeholder="IL"
+                    />
+                </div>
+
+                <div>
+                    <label
+                        htmlFor="zip_code"
+                        className="block font-medium mb-1"
+                    >
+                        Zip Code
+                    </label>
+                    <input
+                        id="zip_code"
+                        name="zip_code"
+                        onChange={handleChange}
+                        required
+                        className="w-full p-2 border rounded"
+                        placeholder="62704"
+                    />
+                </div>
+
+                <div>
+                    <label htmlFor="ssn" className="block font-medium mb-1">
+                        SSN
+                    </label>
+                    <input
+                        id="ssn"
+                        name="ssn"
+                        onChange={handleChange}
+                        required
+                        className="w-full p-2 border rounded"
+                        placeholder="123-45-6789"
+                    />
+                </div>
                 <div className="relative">
-                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                        $
-                    </span>
+                    <label
+                        htmlFor="requested_amount"
+                        className="block font-medium mb-1"
+                    >
+                        Requested Amount
+                    </label>
+                    <span className="absolute left-2 top-1/2 transform -translate-y-1/5 text-gray-500">$</span>
                     <input
                         name="requested_amount"
-                        placeholder="Requested Amount"
+                        placeholder="0.00"
                         type="number"
                         onChange={handleChange}
                         required
-                        className="w-full pl-7 p-2 border rounded" // pl-7 leaves space for $
+                        className="w-full pl-6 p-2 border rounded" // pl-7 leaves space for $
                     />
                 </div>
                 <button
