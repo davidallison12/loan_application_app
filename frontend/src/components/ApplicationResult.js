@@ -46,10 +46,11 @@ const ApplicationResult = () => {
                     <>
                         <p>
                             <strong>Approved Amount:</strong> $
-                            {app.approved_amount?.toFixed(2)} 
+                            {app.approved_amount?.toFixed(2)}
                         </p>
                         <p>
-                            <strong>Interest Rate:</strong> {app.interest_rate * 100}%
+                            <strong>Interest Rate:</strong>{" "}
+                            {app.interest_rate * 100}%
                         </p>
                         <p>
                             <strong>Monthly Payment:</strong> $

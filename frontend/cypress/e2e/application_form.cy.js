@@ -1,6 +1,6 @@
 // Testing for Application Form Component
 
-// This test fills out the application form and submits it, 
+// This test fills out the application form and submits it,
 // then checks that the results page displays the expected information.
 describe("Loan Application Flow", () => {
     it("submits the application form and shows results", () => {
@@ -26,8 +26,6 @@ describe("Loan Application Flow", () => {
         cy.url().should("include", "/result");
 
         // Check that status since it appears if approved or denied
-        cy.contains("Status:").should("exist"); 
-
-
-    })
-})
+        cy.contains("Status:").should("exist");
+    });
+});
