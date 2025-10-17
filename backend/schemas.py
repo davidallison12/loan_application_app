@@ -27,8 +27,10 @@ class BorrowerRequestSchema(ma.Schema):
         required=True,
         validate=[
             # validate.Length(equal=11, error="SSN must be exactly 11 characters."),
-            validate.Regexp(r"^\d{3}-\d{2}-\d{4}$", error="SSN must be in the format ###-##-####")
-        ]
+            validate.Regexp(
+                r"^\d{3}-\d{2}-\d{4}$", error="SSN must be in the format ###-##-####"
+            )
+        ],
     )  # Mask/encrypt at later date for production app
 
 

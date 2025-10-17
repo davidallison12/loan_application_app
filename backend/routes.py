@@ -7,7 +7,6 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from extensions import db
 from models import Application
 from schemas import ApplicationRequestSchema, ApplicationResponseSchema
-                     
 from utils import get_loan_offer, get_or_create_borrower
 
 bp = Blueprint("api", __name__)
@@ -17,6 +16,7 @@ bp = Blueprint("api", __name__)
 # Health Check Endpoint
 # ========================================
 
+
 @bp.route("/health", methods=["GET"])
 def health():
     return jsonify({"status": "ok"}), 200
@@ -25,6 +25,7 @@ def health():
 # ========================================
 # Applications Endpoints
 # ========================================
+
 
 @bp.route("/applications", methods=["POST"])
 def create_application():

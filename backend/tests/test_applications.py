@@ -33,9 +33,9 @@ def mock_expected_response():
         "requested_amount": 15000.00,
         "open_credit_lines": None,  # This will be dynamic
         "approved_amount": 15000.00,
-        "interest_rate": 0.20,
-        "term_months": 24,
-        "monthly_payment": 763.44,
+        "interest_rate": None,
+        "term_months": None,
+        "monthly_payment": None,
         "status": "Approved",
         "reason": None,
         "borrower": {
@@ -92,6 +92,8 @@ def mock_expected_denied_response():
 # ========================================
 # Application Specific Unit Test
 # ========================================
+
+
 @patch("models.datetime")
 @patch("routes.random.randint", return_value=25)  # Force open_credit_lines = 25
 def test_create_application_success_24_month_201(
@@ -121,6 +123,45 @@ def test_create_application_success_24_month_201(
 
     expected_response = mock_expected_response
     expected_response["open_credit_lines"] = 25
+    expected_response["term_months"] = 24
+    expected_response["interest_rate"] = 0.20
+    expected_response["monthly_payment"] = 763.44
+
+    assert json_data == expected_response
+
+
+@patch("models.datetime")
+@patch("routes.random.randint", return_value=9)  # Force open_credit_lines = 25
+def test_create_application_success_36_month_201(
+    mock_randint,
+    mock_datetime,
+    client,
+    mock_application_request,
+    mock_expected_response,
+):
+    """
+    Test creating a loan application successfully returns 201 status code and correct data.
+    Scenario: Credit lines <10 = a 36-month term and 10% interest applies
+    """
+
+    # Set fixed datetime for consistency in tests
+    fixed_time = datetime(2025, 10, 16, 12, 0, 0)
+    mock_datetime.now.return_value = fixed_time
+    mock_datetime.now.return_value = fixed_time
+    mock_datetime.side_effect = lambda *args, **kwargs: datetime(*args, **kwargs)
+
+    # Make the API call
+    response = client.post("/api/applications", json=mock_application_request)
+    json_data = response.get_json()
+
+    # Validate response
+    assert response.status_code == 201
+
+    expected_response = mock_expected_response
+    expected_response["open_credit_lines"] = 9
+    expected_response["term_months"] = 36
+    expected_response["interest_rate"] = 0.10
+    expected_response["monthly_payment"] = 484.01
 
     assert json_data == expected_response
 
