@@ -25,7 +25,7 @@ const ApplicationResult = () => {
     const isApproved = app.status.toLowerCase() === "approved";
 
     return (
-        <div className="p-6 max-w-lg mx-auto">
+        <div className="p-6 w-full max-w-lg sm:max-w-md mx-auto">
             <h2 className="text-2xl font-semibold mb-4">Application Result</h2>
 
             {/* Render Results */}

@@ -73,7 +73,7 @@ const ApplicationForm = () => {
     };
     // Render the form
     return (
-        <div className="p-6 max-w-lg mx-auto">
+        <div className="p-6 w-full max-w-lg sm:max-w-md mx-auto">
             <h2 className="text-2xl font-semibold mb-4">Loan Application</h2>
 
             {error && <p className="text-red-500">{error}</p>}
@@ -258,7 +258,7 @@ const ApplicationForm = () => {
                 </div>
                 <button
                     type="submit"
-                    className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
+                    className="w-full sm:w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
                 >
                     Submit
                 </button>
