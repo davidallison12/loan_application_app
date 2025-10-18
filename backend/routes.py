@@ -29,7 +29,12 @@ def health():
 
 @bp.route("/applications", methods=["POST"])
 def create_application():
-    """Create a new loan application."""
+    """Create a new loan application.
+    Request:
+    Expects JSON payload with borrower info and requested amount.
+    Return:
+        JSON response with application details or error messages.
+    """
     req_schema = ApplicationRequestSchema()
     res_schema = ApplicationResponseSchema()
 
@@ -37,7 +42,7 @@ def create_application():
     try:
         data = req_schema.load(request.get_json())
     except ValidationError as err:
-        return jsonify(err.messages), 400
+        return jsonify({"error": err.messages}), 400
 
     # Check if borrower exists by SSN
     borrower_data = data.pop("borrower")
@@ -47,7 +52,7 @@ def create_application():
     errors = result["errors"]
 
     if errors:
-        return jsonify({"errors": errors}), 400
+        return jsonify({"error": errors}), 400
 
     # At this point we have a borrower (new or existing)
     # Determine open lines of credit for borrower

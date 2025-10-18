@@ -9,7 +9,7 @@ def get_or_create_borrower(borrower_data):
     """
     Retrieve a borrower by SSN or create a new one if not found.
     param:
-        - borrower_data: dict # borrower details including 'ssn'
+        - borrower_data: dict - borrower details including 'ssn'
 
     Returns:
         dict:
@@ -53,8 +53,8 @@ def get_loan_offer(requested_amount, open_credit_lines):
     """
     Determine loan offer based on requested amount and open credit lines.
     param:
-        - requested_amount: float # Amount requested by borrower
-        - open_credit_lines: int # Number of open credit lines the borrower has
+        - requested_amount: float - Amount requested by borrower
+        - open_credit_lines: int  - Number of open credit lines the borrower has
     Conditions:
     - Requested amount outside $10,000-$50,000 = Denied
     - Credit lines of <10 = 36-month term + 10% interest
