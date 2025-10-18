@@ -66,7 +66,7 @@ const ApplicationForm = () => {
             } else {
                 setError(
                     err.response?.data?.message ||
-                        "An error occurred while submitting the application. Plese try again."
+                        "An error occurred while submitting the application. Please try again."
                 );
             }
         }
