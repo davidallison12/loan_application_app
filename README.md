@@ -19,47 +19,40 @@ Single page-application to submit and process loan applications. The app allows 
  - Open credit lines will be randomly generated
  - Borrowers can use web or mobile device to apply for loan (Responsive)
  - Must at least include test case for scenario if credit lines >=10 and <=50
+ - Open credit lines based on randomly generated number between 0 and 100
 
 
 ---
 ## 🧩 Tech Stack 
-**Frontend:** 
-- React 18
-- Tailwind CSS
-- Axios
-- React Router
+**Frontend:** React 18, Tailwind CSS, Axios, React Router
 
-**Backend**
-- Python 3.13
-- Flask
-- SQLAlchemy - ORM for DB Models and DB Operations
-- Marshmallow - Input Validation + Serialization for API requests
+**Backend:** Python 3.13, Flask, SQLAlchemy, Marshmallow 
 
-**Database**
-- SQlite
+**Database:** SQlite
 
-**Testing**
-- Pytest(backend)
-- Cypress(frontend)
+**Testing:** Pytest(Backend), Cypress(Frontend)
 
-**Linters**
-- Prettier (Frontend)
-- Flake8 + Black (Backend)
+**Linters:** Prettier(Frontend), Flake8 + Black(Backend)
 
 ---
 
-## 🏛️ Architecture Overview
+## 🏛️ Architecture Overview and Approach
 **Frontend**
-  - SPA w/ form page for loan applications and results page for displaying approval/denial details.
-  - Tailwind CSS for manageable responsive design
-  - React Router for Single-Page Navigation
-  - Cypress used to for e2e test on full application flow
+  - Single Page Application using React containing a form page for loan applications and results page for displaying approval/denial details. This includes validations on the frontend for required fields and formatting validiation for SSN. 
+  - Tailwind CSS used for scalable and manageble frontend design. Also greate for managing responsive design needs.
+  - React Router for Single-Page Navigation. This is quick to implement for an app with limited pages
+  - Cypress used to for e2e test on full application flow. Developer friendly and simple to implement and scale. Improve consistency across the application.
 
 
 **Backend**
-  - Contains Flask REST endpoint for handling handle form validation, borrower creation, validation, loan calculations and application creation.
-  - Marshmallow - To ensure consistency across API requests and responses
-  - Pytest in order to test application creation flow
+  - Contains a Flask REST endpoint that is responsible for the follwing:
+    - loan application form validation
+    - borrower creation validation (utiliy function)
+    - loan calculations using standard loan formulas and application creation (utility function)
+  
+  Using:
+  - Marshmallow: To ensure consistency across API requests and responses
+  - Pytest: To test application creation flow
     - Scenarios
       - Credit lines < 10
       - Credit lines >=10 and <= 50
@@ -68,28 +61,53 @@ Single page-application to submit and process loan applications. The app allows 
 **Database**
 - SQLAlchemy ORM with SQLite for data persistance
 
+
 ---
 ## 🧠 Design and Thought Process
 
 ### DB Design
 
-Two Tables:
+#### Tables
 
 **Borrowers**
-- Stores all borrower personal info
-- Unique constraint on "ssn" to prevent duplication
-- One Borrower to Many Applications
+- **Pupose** Stores all personal info of each borrower applicant
+- **Fields**
+  - `borrower_id` - `Integer`: Primary Key
+  - `first_name`, `last_name` – `String`
+  - `email` – `String`,
+  - `phone` – `String` 
+  - `address_1` – `String`,
+  - `address_2` – `String`,
+  - `city` – `String`,
+  - `state` – `String`,
+  - `zip_code` – `String`
+  - `ssn` – `String`: Unique identifier for validation and duplication prevention.
+  - `created_at` – `Datetime`: Timestamp for when the borrower was added.
+- **Thought Process:** Create a seperate table that stores all borrower identification and contact information. This allows for a normalized table and avoidance of data redundancy. 
 
 **Applications**
-- Linked to `Borrowers` through `borrower_id`
-- Stores requested amount, approved amount, interest rate, monthly payment, term, status and reason for denial if applicable
-- Calculate interest, term, and monthly payment based off terms on approved applications
+- **Purpose:** Track loan requests, approvals, and calculated metrics.
+- **Fields:**
+  - `application_id` - `Integer`: Primary key
+  - `borrower_id` – `Integer` Foreign key linking to the Borrowers table.
+  - `requested_amount` – `Float`
+  - `approved_amount` – `Float`: Assumed this was the amount requested at this time. This however could change in the future as more complex rules are implemented for loan determinations. 
+  - `interest_rate` – `Float`: Determined based on internal rules listed in acceptance criteria
+  - `monthly_payment` – `Float` Calculated using standard loan formulas.
+  - `term_months` – `Integer`: Determined based on internal rules listed in acceptance criteria
+  - `status` – `String`: Tracks whether the loan is `Approved` or `Denied`.
+  - `reason` – `String`: Optional field providing reason for denial.
+- **Thought Process:** Seperating applications from borrowers allows for borrowers to have multiple applications. This will also make tracking approval decisions simpler.
+
+#### API Design 
 
 **POST /api/applications**
-- Accepts borrower data and requested loan amount
-- Validates borrower data (includes ssn format and uniqueness)
-- Determines approval based off internal rules
-- Returns full application object w/ status and loan details excluding SSN(PII)
+- **Purpose:** Endpoint for submitting new loan applications
+- **Features**
+  - Accepts borrower data and requested loan amount
+  - Validates borrower data (includes ssn format and uniqueness)
+  - Determines approval based off internal rules
+  - Returns full application object with status and loan details excluding SSN(PII)
 - **Payload Structure:**
     ```json
     {
@@ -108,41 +126,42 @@ Two Tables:
       "requested_amount": 40000
     }
     ```
-
-
-### Schema Diagram
-
+- **Response Structure:**
+```json
+{
+  "application_id": 27,
+  "approved_amount": 15000.0,
+  "borrower": {
+    "address_1": "123 Main St",
+    "address_2": "Apt 4B",
+    "borrower_id": 16,
+    "city": "Anytown",
+    "created_at": "2025-10-18T22:01:05.251684",
+    "email": "email@email.com",
+    "first_name": "John",
+    "last_name": "Soe",
+    "phone": "555-123-4567",
+    "state": "CA",
+    "updated_at": "2025-10-18T22:01:05.251695",
+    "zip_code": "12345"
+  },
+  "borrower_id": 16,
+  "created_at": "2025-10-18T22:01:05.253806",
+  "interest_rate": 0.2,
+  "monthly_payment": 763.44,
+  "open_credit_lines": 27,
+  "reason": null,
+  "requested_amount": 15000.0,
+  "status": "Approved",
+  "term_months": 24,
+  "updated_at": "2025-10-18T22:01:05.253808"
+}
 ```
-Borrowers
-+-------------------+
-| id (PK) |
-| first_name |
-| last_name |
-| email |
-| phone |
-| address_1 |
-| address_2 |
-| city |
-| state |
-| zip_code |
-| ssn |
-| created_at |
-+-------------------+
+- **Though Process:** Combining both the borrower information and financial request information in the same endpoint allows for the quick creation or lookup of new borrower data. Followed by immediate processing of loan applicaiton. In the future, we can potentially use the link between applications and borrowers to gain greater understanding in the how ouo customers used our product. 
 
 
-Applications
-+-------------------+
-| id (PK) |
-| borrower_id (FK) |
-| requested_amount |
-| approved_amount |
-| interest_rate |
-| monthly_payment |
-| term_months |
-| status |
-| reason |
-+-------------------+
-```
+
+
 
 ---
 ## 🚀 Local Setup
@@ -154,7 +173,7 @@ git clone git@github.com:davidallison12/loan_application_app.git (SSH link)
 cd loan_application_app
 ```
 
-#### Backend Setup
+#### 2. Backend Setup
 ```bash
 cd backend
 python3 -m venv venv
@@ -166,13 +185,13 @@ flask run
 ```
 Backend will now run on `http://localhost:5000`
 
-#### Frontend Setup (Ideally use a separate tab for running front end as well)
+#### 3. Frontend Setup (Ideally use a separate tab for running front end as well)
 ```bash
 cd ../frontend
 npm install
-npm run dev
+npm start
 ```
-Frontend runs on http://localhost:3000
+Frontend runs on `http://localhost:3000`
 
 ---
 ## 🖥️ How to Use 
@@ -180,13 +199,15 @@ Frontend runs on http://localhost:3000
 1. Open the application in your browser at http://localhost:3000.
 
 2. Fill out the loan application form with all required fields.
+   Note: If you use a requested amount < $10,000 or > $50,000 application will be denied
 
-3. Submit the form.
+4. Submit the form.
 
-4. Results page displays:
+5. Results page displays (Based on scenarios listed in acceptance criteria):
   - ✅ Approved: monthly payment, interest rate, approved amount, term.
 
   - ❌ Denied: reason for denial.
+
 
 
 ---
@@ -199,6 +220,27 @@ Frontend runs on http://localhost:3000
 ```bash
 cd backend
 pytest -v tests/  # Verbose testing
+```
+
+#### Example Curl For Testing Endpoint
+```bash
+curl -X POST http://127.0.0.1:5000/api/applications \
+-H "Content-Type: application/json" \
+-d '{
+  "borrower": {
+    "first_name": "John",
+    "last_name": "Doe",
+    "address_1": "123 Main St",
+    "address_2": "Apt 4B",
+    "city": "Anytown",
+    "state": "CA",
+    "zip_code": "12345",
+    "email": "email@email.com",
+    "phone": "555-123-4567",
+    "ssn": "213-44-6989"
+  },
+  "requested_amount": 15000
+}'
 ```
 
 #### Accessing/Running Frontend Test 
@@ -218,10 +260,10 @@ npx cypress run # Run tests headlessly
 ```
 ---
 ## 🔮 Future Improvements 
-- Expand Application endpoint(GET, PUT/PATCH, DELETE)
+- Expand Application endpoints(GET, PUT/PATCH, DELETE)
 - Add specific Borrower Endpoints
 - Create Authentication and Authorization based off Borrower Table
-- Improve Error Handling on Frontend
+- Improve Error Handling on Frontend for better user experience
   - More robust messaging for specfic errors. Along with Action step for borrower.
 - Build out Frontend w/ a review page and added input validations
   - Phone
@@ -231,8 +273,8 @@ npx cypress run # Run tests headlessly
   -   Using Google Maps to confirm addresses
   -   Phone number format validation
 - SSN Encryption and Masking
-- Replace SQLite with PostgreSQL for scalability more robust security
-- Logging for more advanced troubleshooting
+- Replace SQLite with PostgreSQL for scalability and more robust security
+- Add logging for more advanced troubleshooting
 - More use of environment variables for urls and additonal fields 
 
 ---
