@@ -201,7 +201,7 @@ cd backend
 pytest -v tests/  # Verbose testing
 ```
 
-#### Accessing/Running Front End Test 
+#### Accessing/Running Frontend Test 
 1. Run following:
 ```bash
 cd frontend
