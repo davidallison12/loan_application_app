@@ -65,8 +65,9 @@ const ApplicationForm = () => {
                 setFieldErrors(err.response.data.errors.borrower);
             } else {
                 setError(
-                    err.response?.data?.message || err.response?.data?.errors ||
-                    "An error occurred while submitting the application. Please try again."
+                    err.response?.data?.message ||
+                        err.response?.data?.errors ||
+                        "An error occurred while submitting the application. Please try again."
                 );
             }
         }
@@ -74,7 +75,9 @@ const ApplicationForm = () => {
     // Render the form
     return (
         <div className="p-6 w-full max-w-lg sm:max-w-md mx-auto">
-            <h2 className="text-2xl font-semibold mb-4">Personal Loan Application</h2>
+            <h2 className="text-2xl font-semibold mb-4">
+                Personal Loan Application
+            </h2>
 
             {error && <p className="text-red-500">{error}</p>}
 
@@ -84,7 +87,7 @@ const ApplicationForm = () => {
                         htmlFor="first_name"
                         className="block font-medium mb-1"
                     >
-                        First Name <span style={{ color: 'red' }}>*</span>
+                        First Name <span style={{ color: "red" }}>*</span>
                     </label>
                     <input
                         id="first_name"
@@ -101,7 +104,7 @@ const ApplicationForm = () => {
                         htmlFor="last_name"
                         className="block font-medium mb-1"
                     >
-                        Last Name <span style={{ color: 'red' }}>*</span>
+                        Last Name <span style={{ color: "red" }}>*</span>
                     </label>
                     <input
                         id="last_name"
@@ -115,7 +118,7 @@ const ApplicationForm = () => {
 
                 <div>
                     <label htmlFor="email" className="block font-medium mb-1">
-                        Email <span style={{ color: 'red' }}>*</span>
+                        Email <span style={{ color: "red" }}>*</span>
                     </label>
                     <input
                         id="email"
@@ -126,14 +129,16 @@ const ApplicationForm = () => {
                         className="w-full p-2 border rounded"
                         placeholder="email@email.com"
                     />
-                    {fieldErrors.phone && (
-                        <p className="text-red-500 text-sm">{fieldErrors.phone[0]}</p>
+                    {fieldErrors.email && (
+                        <p className="text-red-500 text-sm">
+                            {fieldErrors.email[0]}
+                        </p>
                     )}
                 </div>
 
                 <div>
                     <label htmlFor="phone" className="block font-medium mb-1">
-                        Phone <span style={{ color: 'red' }}>*</span>
+                        Phone <span style={{ color: "red" }}>*</span>
                     </label>
                     <input
                         id="phone"
@@ -144,7 +149,9 @@ const ApplicationForm = () => {
                         placeholder="555-555-5555"
                     />
                     {fieldErrors.phone && (
-                        <p className="text-red-500 text-sm">{fieldErrors.phone[0]}</p>
+                        <p className="text-red-500 text-sm">
+                            {fieldErrors.phone[0]}
+                        </p>
                     )}
                 </div>
 
@@ -153,7 +160,7 @@ const ApplicationForm = () => {
                         htmlFor="address_1"
                         className="block font-medium mb-1"
                     >
-                        Address 1 <span style={{ color: 'red' }}>*</span>
+                        Address 1 <span style={{ color: "red" }}>*</span>
                     </label>
                     <input
                         id="address_1"
@@ -170,7 +177,7 @@ const ApplicationForm = () => {
                         htmlFor="address_2"
                         className="block font-medium mb-1"
                     >
-                        Address 2 <span style={{ color: 'red' }}>*</span>
+                        Address 2 <span style={{ color: "red" }}>*</span>
                     </label>
                     <input
                         id="address_2"
@@ -183,7 +190,7 @@ const ApplicationForm = () => {
 
                 <div>
                     <label htmlFor="city" className="block font-medium mb-1">
-                        City <span style={{ color: 'red' }}>*</span>
+                        City <span style={{ color: "red" }}>*</span>
                     </label>
                     <input
                         id="city"
@@ -197,7 +204,7 @@ const ApplicationForm = () => {
 
                 <div>
                     <label htmlFor="state" className="block font-medium mb-1">
-                        State <span style={{ color: 'red' }}>*</span>
+                        State <span style={{ color: "red" }}>*</span>
                     </label>
                     <input
                         id="state"
@@ -214,7 +221,7 @@ const ApplicationForm = () => {
                         htmlFor="zip_code"
                         className="block font-medium mb-1"
                     >
-                        Zip Code <span style={{ color: 'red' }}>*</span>
+                        Zip Code <span style={{ color: "red" }}>*</span>
                     </label>
                     <input
                         id="zip_code"
@@ -228,7 +235,7 @@ const ApplicationForm = () => {
 
                 <div>
                     <label htmlFor="ssn" className="block font-medium mb-1">
-                        SSN <span style={{ color: 'red' }}>*</span>
+                        SSN <span style={{ color: "red" }}>*</span>
                     </label>
                     <input
                         id="ssn"
@@ -249,7 +256,7 @@ const ApplicationForm = () => {
                         htmlFor="requested_amount"
                         className="block font-medium mb-1"
                     >
-                        Requested Amount <span style={{ color: 'red' }}>*</span>
+                        Requested Amount <span style={{ color: "red" }}>*</span>
                     </label>
                     <span className="absolute left-2 top-1/2 transform -translate-y-1/5 text-gray-500">
                         $
