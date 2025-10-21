@@ -55,8 +55,10 @@ const ApplicationForm = () => {
 
         // Submit application to backend (Currently hardcoded URL of localhost)
         try {
+            const backendUrl =
+                process.env.REACT_APP_BACKEND || "http://localhost:5000";
             const res = await axios.post(
-                `${process.env.REACT_APP_BACKEND_URL}/api/applications`,
+                `${backendUrl}/api/applications`,
                 payload
             ); // Adjust URL as needed // Hardcoded for now
             navigate("/result", { state: { application: res.data } });
