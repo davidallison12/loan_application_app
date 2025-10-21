@@ -5,9 +5,21 @@
 
 Single page-application to submit and process loan applications. The app allows borrowers to fill out a loan application form, validate the data given, caluclate the loan details and display the results in real time. 
 
+[🎬 Watch the live demo on Loom](https://www.loom.com/share/c3d30cf74bb4412bb1d791ab76355eae)
+
+#### Links to Live Deployments
+
+**Frontend:** https://loan-application-app-rose.vercel.app
+
+**Backend:** https://loan-application-app.onrender.com
+
+**Backend Health Endpoint**: https://loan-application-app.onrender.com/api/health
+
+
 ---
 
 ## ✅ Acceptance Criteria 
+ - User can access app through a website
  - Submit a loan application with borrower info
  - Approve or deny applications based on internal rules using loan amount and open credit lines:
    - If loan < $10,000 or > $50,000 -> Denied
@@ -33,6 +45,7 @@ Single page-application to submit and process loan applications. The app allows 
 **Testing:** Pytest(Backend), Cypress(Frontend)
 
 **Linters:** Prettier(Frontend), Flake8 + Black(Backend)
+
 
 ---
 
@@ -60,6 +73,15 @@ Single page-application to submit and process loan applications. The app allows 
 
 **Database**
 - SQLAlchemy ORM with SQLite for data persistance
+
+**Deployment**
+- **Vercel:** Frontend Deployment
+  - Easy React hosting and deployment
+  - Seperation of concerns 
+- **Render:** Backend Deployment
+  - Built in Database (PostgreSQL)
+  - Handles HTTPS and builds automatically
+  - Straightforward setup
 
 
 ---
@@ -184,6 +206,7 @@ export FLASK_ENV=development
 flask run
 ```
 Backend will now run on `http://localhost:5000`
+Check health by going to `http://localhost:5000/api/health`
 
 #### 3. Frontend Setup (Ideally use a separate tab for running front end as well)
 ```bash
@@ -196,9 +219,11 @@ Frontend runs on `http://localhost:3000`
 ---
 ## 🖥️ How to Use 
 
-1. Open the application in your browser at http://localhost:3000.
+1. **Locallly:** Open the application in your browser at http://localhost:3000.
 
-2. Fill out the loan application form with all required fields.
+   **Deployed Site:** Open the application in your browser at https://loan-application-app-rose.vercel.app
+
+3. Fill out the loan application form with all required fields.
    Note: If you use a requested amount < $10,000 or > $50,000 application will be denied
 
 4. Submit the form.
@@ -260,22 +285,25 @@ npx cypress run # Run tests headlessly
 ```
 ---
 ## 🔮 Future Improvements 
-- Expand Application endpoints(GET, PUT/PATCH, DELETE)
+
+**Backend**
+- Expand Application endpoints (GET, PUT/PATCH, DELETE)
 - Add specific Borrower Endpoints
 - Create Authentication and Authorization based off Borrower Table
+- Additional Backend Validations on inputs
+  -   Using Google Maps to confirm addresses
+- SSN Encryption and Masking
+- Replace SQLite with PostgreSQL for scalability and more robust security (Postgres used with Render but SQLite locally)
+- Add logging for more advanced troubleshooting
+
+
+**Frontend**
 - Improve Error Handling on Frontend for better user experience
   - More robust messaging for specfic errors. Along with Action step for borrower.
 - Build out Frontend w/ a review page and added input validations
   - Phone
   - Zip Code
   - State (Use Abbreviation instead of allowing user to type what they want)
-- Additional Backend Validations on inputs
-  -   Using Google Maps to confirm addresses
-  -   Phone number format validation
-- SSN Encryption and Masking
-- Replace SQLite with PostgreSQL for scalability and more robust security
-- Add logging for more advanced troubleshooting
-- More use of environment variables for urls and additonal fields 
 
 ---
 ## ✉️ Contact 
