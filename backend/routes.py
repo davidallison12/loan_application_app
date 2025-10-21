@@ -42,7 +42,7 @@ def create_application():
     try:
         data = req_schema.load(request.get_json())
     except ValidationError as err:
-        return jsonify({"error": err.messages}), 400
+        return jsonify({"errors": err.messages}), 400
 
     # Check if borrower exists by SSN
     borrower_data = data.pop("borrower")
@@ -52,7 +52,7 @@ def create_application():
     errors = result["errors"]
 
     if errors:
-        return jsonify({"error": errors}), 400
+        return jsonify({"errors": errors}), 400
 
     # At this point we have a borrower (new or existing)
     # Determine open lines of credit for borrower
@@ -78,6 +78,6 @@ def create_application():
 
     except (IntegrityError, SQLAlchemyError) as e:
         db.session.rollback()
-        return jsonify({"error": "Database error", "details": str(e)}), 500
+        return jsonify({"errors": "Database error", "details": str(e)}), 500
 
     return res_schema.jsonify(new_application), 201

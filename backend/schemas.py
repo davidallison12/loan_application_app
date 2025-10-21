@@ -22,7 +22,14 @@ class BorrowerRequestSchema(ma.Schema):
     state = fields.String(required=True)
     zip_code = fields.String(required=True)
     email = fields.Email(required=True)
-    phone = fields.String()
+    phone = fields.String(
+        required=True,
+        validate=[
+            validate.Regexp(
+                r"^\d{3}-\d{3}-\d{4}$", error="Phone number must be in the format ###-###-####"
+            )
+        ],
+    )
     ssn = fields.String(
         required=True,
         validate=[

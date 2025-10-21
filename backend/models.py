@@ -17,7 +17,7 @@ class Borrower(db.Model):
     city = db.Column(db.String(100), nullable=False)
     state = db.Column(db.String(50), nullable=False)
     zip_code = db.Column(db.String(20), nullable=False)
-    phone = db.Column(db.String(20))
+    phone = db.Column(db.String(20), nullable=False)
     ssn = db.Column(db.String(11), unique=True, nullable=False)  # Format: XXX-XX-XXXX
     created_at = db.Column(
         db.DateTime, default=lambda: datetime.now(timezone.utc), nullable=False
