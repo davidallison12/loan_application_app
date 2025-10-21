@@ -54,3 +54,11 @@ def create_app(test_config=False):
 
 
     return app
+
+
+# Run App
+if __name__ == "__main__":
+    app = create_app()
+    with app.app_context():
+        db.create_all()  # Create tables if they don't exist
+    app.run(debug=True, host="0.0.0.0")

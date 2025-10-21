@@ -56,7 +56,7 @@ const ApplicationForm = () => {
         // Submit application to backend (Currently hardcoded URL of localhost)
         try {
             const res = await axios.post(
-                "http://localhost:5000/api/applications",
+                `${process.env.REACT_APP_URL}/api/applications`,
                 payload
             ); // Adjust URL as needed // Hardcoded for now
             navigate("/result", { state: { application: res.data } });
@@ -66,7 +66,7 @@ const ApplicationForm = () => {
             } else {
                 setError(
                     err.response?.data?.message || err.response?.data?.errors ||
-                        "An error occurred while submitting the application. Please try again."
+                    "An error occurred while submitting the application. Please try again."
                 );
             }
         }
@@ -127,8 +127,8 @@ const ApplicationForm = () => {
                         placeholder="email@email.com"
                     />
                     {fieldErrors.phone && (
-        <p className="text-red-500 text-sm">{fieldErrors.phone[0]}</p>
-    )}
+                        <p className="text-red-500 text-sm">{fieldErrors.phone[0]}</p>
+                    )}
                 </div>
 
                 <div>
@@ -144,8 +144,8 @@ const ApplicationForm = () => {
                         placeholder="555-555-5555"
                     />
                     {fieldErrors.phone && (
-        <p className="text-red-500 text-sm">{fieldErrors.phone[0]}</p>
-    )}
+                        <p className="text-red-500 text-sm">{fieldErrors.phone[0]}</p>
+                    )}
                 </div>
 
                 <div>
