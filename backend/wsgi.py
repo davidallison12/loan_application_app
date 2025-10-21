@@ -1,4 +1,4 @@
 from app import create_app
 
-# Used for deployment 
+# Used for deployment
 app = create_app()

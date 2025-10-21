@@ -68,6 +68,14 @@ def create_application():
 
     except (IntegrityError, SQLAlchemyError) as e:
         db.session.rollback()
-        return jsonify({"errors": "Database error. Error when persisiting application to database", "details": str(e)}), 500
+        return (
+            jsonify(
+                {
+                    "errors": "Database error. Error when persisiting application to database",
+                    "details": str(e),
+                }
+            ),
+            500,
+        )
 
     return res_schema.jsonify(new_application), 201

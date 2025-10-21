@@ -26,7 +26,8 @@ class BorrowerRequestSchema(ma.Schema):
         required=True,
         validate=[
             validate.Regexp(
-                r"^\d{3}-\d{3}-\d{4}$", error="Phone number must be in the format ###-###-####"
+                r"^\d{3}-\d{3}-\d{4}$",
+                error="Phone number must be in the format ###-###-####",
             )
         ],
     )

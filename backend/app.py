@@ -1,7 +1,7 @@
 import os
 
 from dotenv import load_dotenv
-from flask import Blueprint,Flask, jsonify
+from flask import Blueprint, Flask, jsonify
 from flask_cors import CORS
 
 from extensions import db, ma
@@ -17,8 +17,7 @@ def create_app(test_config=False):
     CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
 
     # Allows JSON body requests
-    app.config['CORS_HEADERS'] = 'Content-Type'
-
+    app.config["CORS_HEADERS"] = "Content-Type"
 
     # DB Configuration
     if test_config:
@@ -39,23 +38,19 @@ def create_app(test_config=False):
     db.init_app(app)
     ma.init_app(app)
 
-     # ========================================
+    # ========================================
     # Health Check Endpoint
     # ========================================
-    
+
     bp = Blueprint("health", __name__)
 
     @bp.route("/health", methods=["GET"])
     def health():
         return jsonify({"status": "ok"}), 200
 
-
     # Register Blueprints
     app.register_blueprint(bp, url_prefix="/api")
     app.register_blueprint(application_bp, url_prefix="/api")
-
-   
-
 
     return app
 

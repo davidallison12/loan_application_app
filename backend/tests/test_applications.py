@@ -95,7 +95,9 @@ def mock_expected_denied_response():
 
 
 @patch("models.datetime")
-@patch("routes.applications.random.randint", return_value=25)  # Force open_credit_lines = 25
+@patch(
+    "routes.applications.random.randint", return_value=25
+)  # Force open_credit_lines = 25
 def test_create_application_success_24_month_201(
     mock_randint,
     mock_datetime,
@@ -131,7 +133,9 @@ def test_create_application_success_24_month_201(
 
 
 @patch("models.datetime")
-@patch("routes.applications.random.randint", return_value=9)  # Force open_credit_lines = 25
+@patch(
+    "routes.applications.random.randint", return_value=9
+)  # Force open_credit_lines = 25
 def test_create_application_success_36_month_201(
     mock_randint,
     mock_datetime,
@@ -167,7 +171,9 @@ def test_create_application_success_36_month_201(
 
 
 @patch("models.datetime")
-@patch("routes.applications.random.randint", return_value=51)  # Force open_credit_lines = 50
+@patch(
+    "routes.applications.random.randint", return_value=51
+)  # Force open_credit_lines = 50
 def test_create_application_denied_too_many_credit_lines_201(
     mock_randint,
     mock_datetime,
