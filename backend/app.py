@@ -14,7 +14,11 @@ def create_app(test_config=False):
     app = Flask(__name__)
 
     # Enabling CORS for frontend-backend communication
-    CORS(app, resources={r"/api/*": {"origins": "*"}})
+    CORS(app, resources={r"/api/*": {"origins": "*"}, })
+
+    # Allows JSON body requests
+    # app.config['CORS_HEADERS'] = 'Content-Type'
+
 
     # DB Configuration
     if test_config:
