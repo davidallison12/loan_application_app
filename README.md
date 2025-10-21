@@ -217,9 +217,7 @@ cd backend
 python3 -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
-export FLASK_APP=app.py
-export FLASK_ENV=development
-flask run
+python app.py
 ```
 Backend will now run on `http://localhost:5000`
 Check health by going to `http://localhost:5000/api/health`
