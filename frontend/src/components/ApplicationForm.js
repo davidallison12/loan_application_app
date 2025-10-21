@@ -65,7 +65,7 @@ const ApplicationForm = () => {
                 setFieldErrors(err.response.data.errors.borrower);
             } else {
                 setError(
-                    err.response?.data?.message ||
+                    err.response?.data?.message || err.response?.data?.errors ||
                         "An error occurred while submitting the application. Please try again."
                 );
             }
