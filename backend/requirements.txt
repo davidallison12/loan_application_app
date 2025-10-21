@@ -17,5 +17,6 @@ Flask-Marshmallow==1.3.0
 isort==7.0.0
 marshmallow == 4.0.1
 marshmallow-sqlalchemy==1.4.2
+psycopg2-binary==2.9.11
 pytest==8.4.2
 python-dotenv==1.1.1
