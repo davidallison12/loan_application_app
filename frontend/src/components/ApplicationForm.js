@@ -129,11 +129,6 @@ const ApplicationForm = () => {
                         className="w-full p-2 border rounded"
                         placeholder="email@email.com"
                     />
-                    {fieldErrors.email && (
-                        <p className="text-red-500 text-sm">
-                            {fieldErrors.email[0]}
-                        </p>
-                    )}
                 </div>
 
                 <div>
