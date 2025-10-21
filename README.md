@@ -73,6 +73,7 @@ Single page-application to submit and process loan applications. The app allows 
 
 **Database**
 - SQLAlchemy ORM with SQLite for data persistance
+- PostgreSQL for Render deployment
 
 **Deployment**
 - **Vercel:** Frontend Deployment
@@ -82,6 +83,7 @@ Single page-application to submit and process loan applications. The app allows 
   - Built in Database (PostgreSQL)
   - Handles HTTPS and builds automatically
   - Straightforward setup
+  - Unfortunately needs to be booted up when getting accessed. This can take up to 30 seconds. 
 
 
 ---
@@ -182,7 +184,21 @@ Single page-application to submit and process loan applications. The app allows 
 - **Though Process:** Combining both the borrower information and financial request information in the same endpoint allows for the quick creation or lookup of new borrower data. Followed by immediate processing of loan applicaiton. In the future, we can potentially use the link between applications and borrowers to gain greater understanding in the how ouo customers used our product. 
 
 
+---
+## 🖥️ How to Use Live URL
+NOTE: Backend API can take up to 30 seconds to start up. To ensure quick operation go to https://loan-application-app.onrender.com before beginning. If you do not do this, the first submission on front-end will take up to 30 seconds to process
 
+1. Open the application in your browser at https://loan-application-app-rose.vercel.app
+
+2. Fill out the loan application form with all required fields.
+   Note: If you use a requested amount < $10,000 or > $50,000 application will be denied
+
+3. Submit the form.
+
+4. Results page displays (Based on scenarios listed in acceptance criteria):
+  - ✅ Approved: monthly payment, interest rate, approved amount, term.
+
+  - ❌ Denied: reason for denial.
 
 
 ---
@@ -216,14 +232,13 @@ npm start
 ```
 Frontend runs on `http://localhost:3000`
 
+
 ---
-## 🖥️ How to Use 
+## 🖥️ How to Use Locally
 
 1. **Locallly:** Open the application in your browser at http://localhost:3000.
 
-   **Deployed Site:** Open the application in your browser at https://loan-application-app-rose.vercel.app
-
-3. Fill out the loan application form with all required fields.
+2. Fill out the loan application form with all required fields.
    Note: If you use a requested amount < $10,000 or > $50,000 application will be denied
 
 4. Submit the form.
@@ -232,7 +247,6 @@ Frontend runs on `http://localhost:3000`
   - ✅ Approved: monthly payment, interest rate, approved amount, term.
 
   - ❌ Denied: reason for denial.
-
 
 
 ---
@@ -283,6 +297,7 @@ npx cypress open
 cd frontend
 npx cypress run # Run tests headlessly
 ```
+
 ---
 ## 🔮 Future Improvements 
 
@@ -304,6 +319,7 @@ npx cypress run # Run tests headlessly
   - Phone
   - Zip Code
   - State (Use Abbreviation instead of allowing user to type what they want)
+- Have a loading icon or animation to alert people page is loading and not frozen or erroring.
 
 ---
 ## ✉️ Contact 
